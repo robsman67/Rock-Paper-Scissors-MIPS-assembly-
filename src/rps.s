@@ -26,8 +26,9 @@ msg:
 # Returns: Nothing, only print either character 'W', 'L', or 'T' to stdout
 play_game_once:
 
-  addiu $sp $sp -4
+  addiu $sp $sp -8
   sw $ra 0($sp)
+  sw $a0 4($sp)
   
   
   jal gen_byte #create the first byte of the first player
@@ -54,7 +55,8 @@ draw:
   li $v0 11
   syscall
   lw $ra 0($sp)
-  addiu $sp $sp 4
+  lw $a0 4($sp)
+  addiu $sp $sp 8
   jr $ra
   
 rock:
@@ -79,7 +81,8 @@ win_1:
   li $v0 11
   syscall
   lw $ra 0($sp)
-  addiu $sp $sp 4
+  lw $a0 4($sp)
+  addiu $sp $sp 8
   jr $ra
   
 win_2:
@@ -88,6 +91,7 @@ win_2:
   li $v0 11
   syscall
   lw $ra 0($sp)
+  lw $a0 4($sp)
   addiu $sp $sp 4
   jr $ra
   

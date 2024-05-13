@@ -6,9 +6,9 @@
 # | 1 word |  1 word  |   1 byte   | 1 byte | 1 byte | 1 byte |
 configuration:
   .word 1       # eca
-  .word 836531  # tape
-  .byte 20      # tape_len
-  .byte 122     # rule
+  .word 252     # tape
+  .byte 8      # tape_len
+  .byte 106     # rule
   .byte 5       # skip
   .byte 7       # column
   
@@ -25,8 +25,13 @@ main:
 simulate_loop: # One loop iteration
   beqz $s0 terminate
   subi $s0 $s0 1
+  
+  jal print_tape
+  jal simulate_automaton
+  
+  
   la $a0 configuration
-  jal play_game_once
+  #jal play_game_once
   j simulate_loop
   
 terminate:
