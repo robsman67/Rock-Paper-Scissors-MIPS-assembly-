@@ -7,10 +7,10 @@
 automaton:
   .word 1       # eca
   .word 252     # tape
-  .byte 3       # tape_len
+  .byte 8       # tape_len
   .byte 106     # rule
   .byte 1       # skip
-  .byte 1       # column
+  .byte 5       # column
 
 .text
 

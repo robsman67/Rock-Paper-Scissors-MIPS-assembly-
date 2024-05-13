@@ -31,9 +31,9 @@ gen_byte_without_ra: #we can keep the initial value of
   jal gen_bit
   #t1 contain the value of the first random number
   move $s3, $v0
-  
+  #lw $a0 4($sp) #restore the correct value of $a0 before going to the second bit
   jal gen_bit
-  
+  li $t0 2
   add $t2, $s3, $v0
   beq $t2 $t0 gen_byte_without_ra#in order to see if 2 consicutive one are choose by the gen_bit, if 1 we do gen_byte again
   
@@ -67,6 +67,8 @@ gen_bit:
   sw $a0 0($sp)
   sw $ra 4($sp)
   
+  la $a0 0($a0)
+  
   lw $a1 4($a0) #has the tape
   lw $t5 0($a0) #the eca
   
@@ -83,24 +85,25 @@ eca:
 
   beq $t3 $t4 columm #when we have done it skip time
   
-  addi $sp $sp -20
+  addi $sp $sp -24
+
   sw $t2 0($sp)
   sw $t3 4($sp)
   sw $t4 8($sp)
   sw $t5 12($sp)
   sw $t6 16($sp)
   sw $a1 20($sp)
-  
+  sw $a0 24($sp)
   jal simulate_automaton
   
-
   lw $t2 0($sp)
   lw $t3 4($sp)
   lw $t4 8($sp)
   lw $t5 12($sp)
   lw $t6 16($sp)
   lw $a1 20($sp)
-  addi $sp $sp 20
+  sw $a0 24($sp)
+  addi $sp $sp 24
   
   addiu $t3 $t3 1
   
@@ -140,6 +143,7 @@ ecaz:
 end:
   #do a move for store the value in v0
   #restore the value
+  
   lw $a0 0($sp)
   lw $ra 4($sp)
   addi $sp $sp 8

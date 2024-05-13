@@ -73,7 +73,6 @@ loop_simulate:
   j loop_simulate
 
 
-
 end_copy_simulate:
 
   move $t3, $zero
@@ -90,8 +89,6 @@ end_copy_simulate:
   move $s2 $zero
   
   la $a1 rule #contain the adress of the last significant bit
-  
-
   
 
   
@@ -224,6 +221,7 @@ end_simulate:
   lw $a0 4($sp)     #take back the original a0, from configuration
   sw $t4 4($a0)     # Update the tape
   
+  lw $a0 4($sp)
   lw $ra 0($sp)
 
   addiu $sp $sp 8
