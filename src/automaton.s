@@ -30,18 +30,70 @@ simulate_automaton:
   sw $ra 0($sp)
   sw $a0 4($sp)
 
-  la $t0, 4($a0)     # Load the tape adress
+  lw $t0, 4($a0)     # Load the tape words
   # Load the length of the tape into $t1
   lb $t1, 8($a0)
   
-  addiu $t1 $t1 -1 #because start from 0 
-  lb $t2, 9($a0) #store the number from rule
+  lb $s2, 9($a0) #store the number from rule
   
   la $a1 rule #contain the adress of the last significant bit
   
   addiu $s1 $s1 8 #counteur
   
+  move $t3, $zero
+  move $t4, $zero  
+  move $t5, $zero  
+  move $t6, $zero  
+
+
+  # Copy the tape to the store_tape variable in the .data section
+  la $t5 store_tape
+  la $a1, store_new_tape
+  li $t2, 0 # Counter for copying
+
+loop_simulate:
   
+  # Check if loop counter is equal to tape length
+  beq $t3, $t1, end_copy_simulate
+  
+  # Extract the LSB of the tape
+  andi $t4, $t0, 1
+  
+  sb $t4, 0($t5)
+  
+  # Increment loop counter
+  addi $t3, $t3, 1
+  beq $t3, $t1, end_copy_simulate #in order to not increment when we have reach the length
+  # Store the bit in the stack
+  addiu $t5 $t5 1
+  
+  # shift to the left to access the next bit
+  srl $t0, $t0, 1
+  # Repeat the loop
+  j loop_simulate
+
+
+
+end_copy_simulate:
+
+  move $t3, $zero
+  move $t4, $zero  
+  move $t5, $zero  
+  move $t6, $zero
+  
+  la $a0 store_tape
+  addiu $t1 $t1 -1 #because start from 0 
+  #la $t0, 4($a0)     # Load the tape adress
+  # Load the length of the tape into $t1
+  
+  move $t2 $s2
+  move $s2 $zero
+  
+  la $a1 rule #contain the adress of the last significant bit
+  
+
+  
+
   
 loop_rule:
 
@@ -138,9 +190,6 @@ number: #take the 3 cell and combine each other
   
   beq $s1 $t1 last_cell #in order to quit the loop when it's finish and do the last one
   
-
-  
-
   j loop_automaton
 
 n_tape_config:
@@ -170,7 +219,8 @@ first_store: #in order to recompile the number from his bit
 
 end_simulate:
   
-  move $t3 $a0 #to keep the adresse of the tape
+  #move $t3 $a0 #to keep the adresse of the tape
+  move $t2 $zero
   lw $a0 4($sp)     #take back the original a0, from configuration
   sw $t4 4($a0)     # Update the tape
   
@@ -211,11 +261,9 @@ print_tape:
   # Initialize loop counter
   li $t3, 0
   la $a0 store_tape
-  
-  
-  
 
 loop:
+  
   # Check if loop counter is equal to tape length
   beq $t3, $t1, print
   
@@ -230,14 +278,16 @@ loop:
   # Store the bit in the stack
   addiu $a0 $a0 1
   
-  # Shift the mask to the left to access the next bit
+  # shift to the left to access the next bit
   srl $t0, $t0, 1
   # Repeat the loop
   j loop
+ 
 
 print:
   # Print the bit
-  move $a1, $a0 #in order to store the adresse of the least significant bit
+  subu $a1 $a0 $t1
+  #move $a1, $a0 #in order to store the adresse of the least significant bit
   li $t3, 0           # Reset loop counter
   
 print_loop:
