@@ -38,6 +38,8 @@ play_game_once:
   jal gen_byte
 
   move $t0, $s4
+  
+  move $s4, $zero
   move $t1, $v0 #Player two
   
   li $t2 1 #refer to 01 paper

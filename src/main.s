@@ -1,22 +1,34 @@
+# vim:sw=2 syntax=asm
 .data
-    .globl main
 
 # Memory layout of the Configuration
 # |   eca  |   tape   |  tape_len  |  rule  |  skip  | column |
 # | 1 word |  1 word  |   1 byte   | 1 byte | 1 byte | 1 byte |
-automaton:
-  .word 1       # eca
+configuration:
+  .word 0       # eca
   .word 252     # tape
-  .byte 8       # tape_len
+  .byte 8      # tape_len
   .byte 106     # rule
-  .byte 1       # skip
-  .byte 5       # column
-
+  .byte 5       # skip
+  .byte 7       # column
+  
 .text
+  .globl main
 
+# Example main program that steps the ECA 10 times
 main:
-  la $a0 automaton
-  jal play_game_once
+  li $s0 10
+  la $a0 configuration
+  jal simulate_loop
+  j terminate
 
-  li      $v0 10
+simulate_loop: # One loop iteration
+  beqz $s0 terminate
+  subi $s0 $s0 1
+  la $a0 configuration
+  jal play_game_once
+  j simulate_loop
+  
+terminate:
+  li $v0 10
   syscall

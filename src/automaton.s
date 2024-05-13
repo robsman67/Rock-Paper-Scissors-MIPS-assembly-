@@ -52,7 +52,7 @@ simulate_automaton:
   li $t2, 0 # Counter for copying
 
 loop_simulate:
-  
+  #we do it again for the gen_bit
   # Check if loop counter is equal to tape length
   beq $t3, $t1, end_copy_simulate
   
@@ -252,11 +252,11 @@ print_tape:
   sw $ra 0($sp)
   sw $a0 4($sp)
   
-  lw $t0, 4($a0)     # Load the tape 
-  # Load the length of the tape into $t1
+  lw $t0, 4($a0)     # load the tape 
+  # load the length of the tape into $t1
   lb $t1, 8($a0)
   
-  # Initialize loop counter
+  # initialize loop counter
   li $t3, 0
   la $a0 store_tape
 
@@ -270,26 +270,25 @@ loop:
   
   sb $t4, 0($a0)
   
-  # Increment loop counter
+  # increment loop counter
   addi $t3, $t3, 1
   beq $t3, $t1, print #in order to not increment when we have reach the length
   # Store the bit in the stack
   addiu $a0 $a0 1
   
-  # shift to the left to access the next bit
+  # shift right to access the next bit
   srl $t0, $t0, 1
   # Repeat the loop
   j loop
  
 
 print:
-  # Print the bit
+
   subu $a1 $a0 $t1
-  #move $a1, $a0 #in order to store the adresse of the least significant bit
-  li $t3, 0           # Reset loop counter
+  li $t3, 0           # reset counter
   
 print_loop:
-  # Check if loop counter is equal to tape length
+  # check if loop counter is equal to tape length
   beq $t3, $t1, end
 
   # Load the bit from the stack
@@ -312,20 +311,20 @@ print_dead:
   move $a0 $t5
 
 next_iteration:
-  # Increment loop counter
+  # Increment counter
   addi $t3, $t3, 1
   
   # Increment the address of the next bit in the data
   addiu $a0 $a0 -1
   
-  # Repeat the loop
+  # Repeat
   j print_loop
 
 end:
 
-  li $v0, 11      # Charger le code de la syscall pour l'impression d'un caractère
-  li $a0, '\n'   # Charger le caractère de saut de ligne
-  syscall         # Appeler la syscall pour imprimer le saut de ligne
+  li $v0, 11
+  li $a0, '\n'   # go to the next ligne
+  syscall        
   lw $ra 0($sp)
   lw $a0 4($sp)
   addiu $sp $sp 8

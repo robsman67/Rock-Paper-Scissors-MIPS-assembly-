@@ -17,6 +17,8 @@
 #  Compute the next valid byte (00, 01, 10) and put into $v0
 #  If 11 would be returned, produce two new bits until valid
 #
+
+
 gen_byte:
   # Save $ra, because we can lose it when we do the jal gen_bit
   addiu $sp $sp -8
@@ -85,7 +87,7 @@ eca:
 
   beq $t3 $t4 columm #when we have done it skip time
   
-  addi $sp $sp -24
+  addi $sp $sp -24 #store the value that we want to use again after the automaton simulation
 
   sw $t2 0($sp)
   sw $t3 4($sp)
