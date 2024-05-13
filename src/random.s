@@ -93,7 +93,6 @@ eca:
   sw $t5 12($sp)
   sw $t6 16($sp)
   sw $a1 20($sp)
-  sw $a0 24($sp)
   jal simulate_automaton
   
   lw $t2 0($sp)
@@ -102,7 +101,6 @@ eca:
   lw $t5 12($sp)
   lw $t6 16($sp)
   lw $a1 20($sp)
-  sw $a0 24($sp)
   addi $sp $sp 24
   
   addiu $t3 $t3 1

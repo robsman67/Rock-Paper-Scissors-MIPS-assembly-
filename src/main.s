@@ -15,17 +15,8 @@ automaton:
 .text
 
 main:
-  li $s0 10 # loop counter
-loop:
-  beqz $s0 terminate
-  subi $s0 $s0 1
   la $a0 automaton
-  jal gen_byte
-  # print returned value
-  move $a0 $v0
-  li $v0 1
-  syscall
-  j loop
-terminate:
+  jal play_game_once
+
   li      $v0 10
   syscall

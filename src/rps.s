@@ -32,11 +32,12 @@ play_game_once:
   
   
   jal gen_byte #create the first byte of the first player
-  move $t4 $v0 #store the result of first player
+  move $s4 $v0 #store the result of first player
+  
 
   jal gen_byte
-  
-  move $t0, $t4
+
+  move $t0, $s4
   move $t1, $v0 #Player two
   
   li $t2 1 #refer to 01 paper
