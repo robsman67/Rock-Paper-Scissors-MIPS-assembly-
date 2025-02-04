@@ -60,19 +60,7 @@ This project is an implementation of the classic Rock Paper Scissors game in MIP
    ```sh
    python run_tests {path_to_test.s} --debug
    ```
-
-## Submission Guidelines
-- Ensure all changes are committed and pushed before the deadline:
-  ```sh
-  git add .
-  git commit -m "Final submission"
-  git push
-  ```
-- Submissions must be made before **Monday, 13th of May, AoE (Anywhere on Earth).**
-- Only files in the `src/` directory will be graded.
-
 ## Notes
 - Adhere to **MIPS calling conventions**.
 - Ensure `random.s` and `automaton.s` work independently.
 - Comments in assembly code are required for readability.
-- The grading system will use a specific MARS version; ensure compatibility.
