@@ -9,6 +9,8 @@ This project is an implementation of the classic Rock Paper Scissors game in MIP
 - Alternative random number generation using Elementary Cellular Automata (ECA).
 - Output of the game results as `W` (Win), `L` (Loss), or `T` (Tie).
 
+Exemple of the game simulation with 10 iteration : 
+![image](https://github.com/user-attachments/assets/d16c6b07-2702-4450-a2a2-99d9bd4ddb11)
 
 ## Installation and Setup
 1. Clone this project repository:
